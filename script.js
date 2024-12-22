@@ -105,7 +105,6 @@ const displayMovements = function(acc) {
      containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 }
-displayMovements(account1);
 // __________________________________________
 
 
@@ -158,7 +157,6 @@ const calcDisplaySummary = function(acc) {
     labelSumInterest.textContent = `${interest.toFixed(2)} $`;
     
 };
-calcDisplaySummary(account1)
 // ____________________________________________
 
 
@@ -205,3 +203,75 @@ function updateUI (acc) {
 }
 //_____________________________________________
 
+
+// ------------ Transfer Money ----------------
+
+btnTransfer.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  if(
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    updateUI(currentAccount);
+  }
+});
+// _____________________________________________
+
+
+//---------------- Loan Function ---------------
+
+btnLoan.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const amount = Math.floor(inputLoanAmount.value);
+
+  // 'some' method Checks atleast 1 movement should be more than the 10% of loan Amount
+  if(amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) { 
+
+    //  Add movements 
+     currentAccount.movements.push(amount);
+     
+    // Update UI
+     updateUI(currentAccount)
+
+    inputLoanAmount.value = '';
+    }
+});
+// _____________________________________________
+
+
+// --------------- Close Function ---------------
+
+btnClose.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  if(
+    inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    
+    // Delete Account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+
+  labelWelcome.textContent = `Log in to get started`
+});
+// _____________________________________________
