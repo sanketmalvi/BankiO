@@ -88,3 +88,39 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // ---------------------------------------------------------------------------//
 
+
+//--------- Displaying the Deposits and Withdrawals -----------//
+
+const displayMovements = function(acc) {
+  containerMovements.innerHTML = '';
+  const movs = acc.movements;
+
+  movs.forEach((mov, i) => {
+
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    
+    const html = `
+        <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${ i+1 } ${type}</div>
+          <div class="movements__value">${mov.toFixed(2)}</div>
+        </div>
+        `;
+     containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+}
+
+displayMovements(account1);
+
+//--------- Creating UserName in Data for login -----------//
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0]).join('');
+  })
+}
+createUsernames(accounts)
+// ---------------------------------------------- //
+
+
