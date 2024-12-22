@@ -111,6 +111,7 @@ const displayMovements = function(acc) {
 
 displayMovements(account1);
 
+
 //--------- Creating UserName in Data for login -----------//
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -121,6 +122,47 @@ const createUsernames = function (accs) {
   })
 }
 createUsernames(accounts)
-// ---------------------------------------------- //
+// -------------------------------------------- //
+
+
+//--------- Displaying the Balance -----------//
+
+const calcDisplayBalance = function(acc) {
+  const balance = acc.reduce((acc, curVal) => acc + curVal, 0);
+  labelBalance.textContent = `${balance.toFixed(2)} USD`;
+}
+calcDisplayBalance(account1.movements)
+// -------------------------------------------- //
+
+
+
+//--------- Displaying the Summary : Incomes,Outgoing, Interest -----------//
+
+const calcDisplaySummary = function(acc) {
+  
+  // calculating incomes
+  const incomes = acc.movements
+    .filter(movs => movs > 0)
+    .reduce((acc, curVal) => acc + curVal, 0);
+  labelSumIn.textContent = `${incomes.toFixed(2)} $`
+
+  // calculating outgoing payments
+  const out = acc.movements
+    .filter(movs => movs < 0)
+    .reduce((acc, curVal) => acc + curVal, 0);
+  
+  labelSumOut.textContent = `${out.toFixed(2)} $`
+
+  // calculating the interest Rate
+  const interest = acc.movements
+    .filter(movs => movs > 0)
+    .map(deposit => (deposit * acc.interestRate)/100)
+    .filter(int => int >=1 )
+    .reduce((acc, curVal) => acc + curVal, 0);
+
+  labelSumInterest.textContent = `${interest.toFixed(2)} $`;
+};
+calcDisplaySummary(account1)
+// -------------------------------------------- //
 
 
