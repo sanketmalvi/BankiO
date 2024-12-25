@@ -91,7 +91,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 //--------- Displaying the Deposits and Withdrawals -----------
 
-const displayMovements = function(acc, sort= 'false') {
+const displayMovements = function(acc, sort= false) {
 
   containerMovements.innerHTML = '';
 
